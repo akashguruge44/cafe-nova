@@ -1,0 +1,599 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Cafe Nova — Our Menu</title>
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Open+Sans:wght@300;400;600&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --dark:#111010;
+      --accent:#b68b68;
+      --muted:#e9e2dc;
+      --sep:#cfae84;
+      --panel-bg:linear-gradient(90deg, rgba(17,16,16,1) 0%, rgba(17,16,16,1) 60%, rgba(255,255,255,0) 100%);
+      --shadow: 0 3px 0 rgba(0,0,0,0.25);
+      --max-width:1200px;
+      --radius:6px;
+    }
+
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family:'Open Sans',system-ui,Arial, Helvetica, sans-serif;
+      color:#231f20;
+      background:#fff;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+    }
+
+    /* ---------- Header ---------- */
+    .site-header{
+      background:var(--dark);
+      color:var(--muted);
+      padding:12px 20px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:20px;
+      position:sticky;
+      top:0;
+      z-index:20;
+    }
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:14px;
+    }
+    .logo{
+      width:46px;
+      height:46px;
+      background:var(--accent);
+      border-radius:50%;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      color:var(--dark);
+      font-weight:800;
+      font-family:'Montserrat',sans-serif;
+      box-shadow:var(--shadow);
+    }
+    .brand h1{
+      margin:0;
+      font-family:'Montserrat',sans-serif;
+      font-size:22px;
+      letter-spacing:1px;
+      color:#fff;
+    }
+    .nav{
+      display:flex;
+      gap:22px;
+      align-items:center;
+      font-size:15px;
+    }
+    .nav a{color:#dbd6d1;text-decoration:none}
+    .nav a.active{background:var(--accent); padding:10px 14px; border-radius:4px; color:var(--dark); font-weight:600}
+
+    /* ---------- Hero Title ---------- */
+    .container{
+      max-width:var(--max-width);
+      margin:32px auto;
+      padding:0 20px;
+    }
+    .page-title{
+      text-align:center;
+      margin-bottom:28px;
+    }
+    .page-title h2{
+      font-family:'Montserrat',sans-serif;
+      margin:0;
+      font-size:36px;
+      color:var(--dark);
+      letter-spacing:1px;
+    }
+    .page-sub{
+      margin-top:12px;
+      height:6px;
+      width:120px;
+      display:inline-block;
+      background:linear-gradient(90deg,var(--sep),transparent);
+      border-radius:3px;
+    }
+
+    /* ---------- Accordion Menu ---------- */
+    .menu-accordion{
+      display:flex;
+      flex-direction:column;
+      gap:14px;
+      margin-top:24px;
+    }
+
+    .panel{
+      background:transparent;
+      border-radius:6px;
+      position:relative;
+      overflow:visible;
+    }
+
+    .panel-header{
+      display:flex;
+      align-items:center;
+      gap:18px;
+      padding:22px;
+      background:var(--panel-bg);
+      border-radius:6px;
+      box-shadow:var(--shadow);
+      cursor:pointer;
+      position:relative;
+      border-left:10px solid rgba(0,0,0,0);
+    }
+
+    /* circular left icon */
+    .left-ico{
+      min-width:46px;
+      min-height:46px;
+      border-radius:50%;
+      background:var(--accent);
+      color:var(--dark);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-weight:700;
+      box-shadow:0 2px 0 rgba(0,0,0,0.18);
+      border:6px solid #fff;
+    }
+    .panel-header h3{
+      margin:0;
+      color:#fff;
+      font-family:'Montserrat',sans-serif;
+      font-size:20px;
+      text-shadow:0 1px 0 rgba(0,0,0,0.25);
+    }
+
+    /* right chevron */
+    .chev{
+      margin-left:auto;
+      width:42px;
+      height:42px;
+      border-radius:50%;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      background:rgba(255,255,255,0.12);
+    }
+    .chev svg{transform:rotate(0deg); transition:transform .25s ease}
+
+    .panel.open .chev svg{transform:rotate(180deg)}
+
+    /* Decorative: coffee circle in header (faux) */
+    .coffee-deco{
+      position:absolute;
+      right:24px;
+      top:-14px;
+      width:110px;
+      height:110px;
+      border-radius:50%;
+      background:radial-gradient(circle at 30% 30%, #7b4a31 0 35%, #4a2b1c 36% 100%);
+      opacity:.9;
+      pointer-events:none;
+      mix-blend-mode:screen;
+    }
+
+    /* panel content (collapsed) */
+    .panel-body{
+      display:none;
+      background:#fff;
+      border-radius:6px;
+      padding:28px 26px;
+      border:1px solid #efe7e1;
+      margin-top:10px;
+    }
+    .panel.open .panel-body{display:block}
+
+    /* menu list layout */
+    .menu-columns{
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      gap:26px;
+    }
+    .menu-item{
+      padding:12px 6px;
+      border-bottom:2px dotted var(--sep);
+      font-size:14px;
+      color:#2d1f1b;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+    }
+    .menu-item:last-child{border-bottom:0}
+    .menu-item .name{font-weight:600}
+    .menu-item .price{font-weight:600; color:var(--accent)}
+
+    /* Footer */
+    footer{
+      margin-top:60px;
+      background:var(--dark);
+      color:var(--muted);
+      padding:36px 20px;
+    }
+    .footer-inner{
+      max-width:var(--max-width);
+      margin:0 auto;
+      display:flex;
+      justify-content:space-between;
+      gap:20px;
+      align-items:flex-start;
+    }
+    .footer-col{width:33%}
+    .footer-col h4{color:#fff; margin-top:0; font-family:'Montserrat',sans-serif}
+    .footer-col p{margin:6px 0 0;font-size:14px}
+    .copyright{
+      text-align:center;
+      padding-top:18px;
+      color:#cfc6c0;
+      font-size:13px;
+    }
+
+    /* responsive */
+    @media (max-width:980px){
+      .menu-columns{grid-template-columns:repeat(2,1fr)}
+      .footer-inner{flex-direction:column; align-items:center}
+      .footer-col{width:100%; text-align:center}
+      .coffee-deco{display:none}
+    }
+    @media (max-width:620px){
+      .menu-columns{grid-template-columns:1fr}
+      .panel-header{padding:16px}
+      .page-title h2{font-size:28px}
+      .logo{width:40px;height:40px}
+    }
+
+    /* small helper for up-arrow (like in screenshot) */
+    .to-top{
+      position:fixed;
+      right:18px;
+      bottom:18px;
+      width:44px;height:44px;
+      background:var(--accent);
+      color:var(--dark);
+      border-radius:6px;
+      display:grid;
+      place-items:center;
+      box-shadow:0 6px 14px rgba(0,0,0,0.25);
+      cursor:pointer;
+      z-index:999;
+    }
+
+  </style>
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="brand">
+      <div class="logo">CN</div>
+      <div>
+        <h1>Cafe Nova</h1>
+        <div style="font-size:12px;color:#bfb6b0;margin-top:4px">Fresh. Cozy. Local.</div>
+      </div>
+    </div>
+
+    <nav class="nav" aria-label="Main navigation">
+      <a href="Cafe Nova.html">Home</a>
+      <a href="About1.html">About</a>
+      <a href="about.html" class="active">Menu</a>
+      <a href="#">Contact</a>
+    </nav>
+  </header>
+
+  <main class="container" id="top">
+    <section class="page-title">
+      <h2>OUR MENU</h2>
+      <div class="page-sub" aria-hidden="true"></div>
+    </section>
+
+    <section class="menu-accordion" id="menuAccordion">
+
+      <!-- Panel 1 -->
+      <article class="panel" data-panel="0">
+        <div class="panel-header" role="button" aria-expanded="false" tabindex="0">
+          <div class="left-ico">☕</div>
+          <h3>Frappuccino / Cold Coffees / Juice</h3>
+          <div class="chev" aria-hidden="true">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <div class="coffee-deco" aria-hidden="true"></div>
+        </div>
+        <div class="panel-body">
+          <div class="menu-columns">
+            <div>
+              <div class="menu-item"><span class="name">Brownie Frap (G)</span><span class="price">$5.50</span></div>
+              <div class="menu-item"><span class="name">Caramel Cream Frap (G)</span><span class="price">$5.25</span></div>
+              <div class="menu-item"><span class="name">Chocolate Cookie Cream Frap (G)</span><span class="price">$5.75</span></div>
+              <div class="menu-item"><span class="name">Double Shot Ice Shaken Espresso</span><span class="price">$4.00</span></div>
+              <div class="menu-item"><span class="name">Fruit Blast Juice (M)</span><span class="price">$3.50</span></div>
+            </div>
+
+            <div>
+              <div class="menu-item"><span class="name">Brownie Frap (T)</span><span class="price">$5.50</span></div>
+              <div class="menu-item"><span class="name">Caramel Frap (G)</span><span class="price">$5.00</span></div>
+              <div class="menu-item"><span class="name">Chocolate Cookie Cream Frap (T)</span><span class="price">$5.75</span></div>
+              <div class="menu-item"><span class="name">Coffee Frap (G)</span><span class="price">$4.75</span></div>
+              <div class="menu-item"><span class="name">Drinking Water Bottle - 500ml</span><span class="price">$1.00</span></div>
+            </div>
+
+            <div>
+              <div class="menu-item"><span class="name">Caramel Cream Frap (T)</span><span class="price">$5.25</span></div>
+              <div class="menu-item"><span class="name">Caramel Frap (T)</span><span class="price">$5.00</span></div>
+              <div class="menu-item"><span class="name">Chocolate Cream Frap (G)</span><span class="price">$5.75</span></div>
+              <div class="menu-item"><span class="name">Coffee Frap (T)</span><span class="price">$4.75</span></div>
+              <div class="menu-item"><span class="name">Bottled Sparkling Water - 330ml</span><span class="price">$1.50</span></div>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <!-- Panel 2 -->
+      <article class="panel" data-panel="1">
+        <div class="panel-header" role="button" aria-expanded="false" tabindex="0">
+          <div class="left-ico">☕</div>
+          <h3>Hot Espresso / Flavoured Tea</h3>
+          <div class="chev" aria-hidden="true">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <div class="coffee-deco" aria-hidden="true"></div>
+        </div>
+        <div class="panel-body">
+          <div class="menu-columns">
+            <div>
+              <div class="menu-item"><span class="name">Espresso Single</span><span class="price">$2.00</span></div>
+              <div class="menu-item"><span class="name">Espresso Double</span><span class="price">$2.80</span></div>
+              <div class="menu-item"><span class="name">Americano</span><span class="price">$2.60</span></div>
+              <div class="menu-item"><span class="name">Cappuccino</span><span class="price">$3.20</span></div>
+            </div>
+
+            <div>
+              <div class="menu-item"><span class="name">Flat White</span><span class="price">$3.40</span></div>
+              <div class="menu-item"><span class="name">Latte</span><span class="price">$3.40</span></div>
+              <div class="menu-item"><span class="name">Mocha</span><span class="price">$3.80</span></div>
+              <div class="menu-item"><span class="name">Herbal Tea</span><span class="price">$2.20</span></div>
+            </div>
+
+            <div>
+              <div class="menu-item"><span class="name">Earl Grey</span><span class="price">$2.20</span></div>
+              <div class="menu-item"><span class="name">Green Tea</span><span class="price">$2.20</span></div>
+              <div class="menu-item"><span class="name">Chai Latte</span><span class="price">$3.10</span></div>
+              <div class="menu-item"><span class="name">Hot Chocolate</span><span class="price">$3.00</span></div>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <!-- Panel 3 -->
+      <article class="panel" data-panel="2">
+        <div class="panel-header" role="button" aria-expanded="false" tabindex="0">
+          <div class="left-ico">🍽</div>
+          <h3>Savory Food</h3>
+          <div class="chev" aria-hidden="true">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <div class="coffee-deco" aria-hidden="true"></div>
+        </div>
+        <div class="panel-body">
+          <div class="menu-columns">
+            <div>
+              <div class="menu-item"><span class="name">Club Sandwich</span><span class="price">$6.50</span></div>
+              <div class="menu-item"><span class="name">Grilled Panini</span><span class="price">$6.00</span></div>
+              <div class="menu-item"><span class="name">Caesar Salad</span><span class="price">$5.50</span></div>
+            </div>
+
+            <div>
+              <div class="menu-item"><span class="name">Tomato Basil Soup</span><span class="price">$4.50</span></div>
+              <div class="menu-item"><span class="name">Quiche of the Day</span><span class="price">$5.80</span></div>
+              <div class="menu-item"><span class="name">Loaded Fries</span><span class="price">$4.00</span></div>
+            </div>
+
+            <div>
+              <div class="menu-item"><span class="name">Avocado Toast</span><span class="price">$5.25</span></div>
+              <div class="menu-item"><span class="name">BLT</span><span class="price">$5.75</span></div>
+              <div class="menu-item"><span class="name">Seasonal Grain Bowl</span><span class="price">$7.00</span></div>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <!-- Panel 4 -->
+      <article class="panel" data-panel="3">
+        <div class="panel-header" role="button" aria-expanded="false" tabindex="0">
+          <div class="left-ico">🍫</div>
+          <h3>Chocolates</h3>
+          <div class="chev" aria-hidden="true">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <div class="coffee-deco" aria-hidden="true"></div>
+        </div>
+        <div class="panel-body">
+          <div class="menu-columns">
+            <div>
+              <div class="menu-item"><span class="name">Signature Truffle Box (8pc)</span><span class="price">$10.00</span></div>
+              <div class="menu-item"><span class="name">Hazelnut Brownie</span><span class="price">$3.50</span></div>
+            </div>
+            <div>
+              <div class="menu-item"><span class="name">Chocolate Bark</span><span class="price">$4.50</span></div>
+              <div class="menu-item"><span class="name">Dark Chocolate Slice</span><span class="price">$3.75</span></div>
+            </div>
+            <div>
+              <div class="menu-item"><span class="name">Chocolate Mousse Cup</span><span class="price">$4.00</span></div>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <!-- Panel 5 -->
+      <article class="panel" data-panel="4">
+        <div class="panel-header" role="button" aria-expanded="false" tabindex="0">
+          <div class="left-ico">🍰</div>
+          <h3>Cakes</h3>
+          <div class="chev" aria-hidden="true">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <div class="coffee-deco" aria-hidden="true"></div>
+        </div>
+        <div class="panel-body">
+          <div class="menu-columns">
+            <div>
+              <div class="menu-item"><span class="name">Classic Cheesecake</span><span class="price">$4.50</span></div>
+              <div class="menu-item"><span class="name">Red Velvet Slice</span><span class="price">$4.75</span></div>
+            </div>
+            <div>
+              <div class="menu-item"><span class="name">Lemon Drizzle Cake</span><span class="price">$4.00</span></div>
+              <div class="menu-item"><span class="name">Carrot Cake</span><span class="price">$4.25</span></div>
+            </div>
+            <div>
+              <div class="menu-item"><span class="name">Chocolate Fudge Cake</span><span class="price">$5.00</span></div>
+              <div class="menu-item"><span class="name">Slice of the Day</span><span class="price">$3.50</span></div>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <!-- Panel 6 -->
+      <article class="panel" data-panel="5">
+        <div class="panel-header" role="button" aria-expanded="false" tabindex="0">
+          <div class="left-ico">🍮</div>
+          <h3>Desserts</h3>
+          <div class="chev" aria-hidden="true">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <div class="coffee-deco" aria-hidden="true"></div>
+        </div>
+        <div class="panel-body">
+          <div class="menu-columns">
+            <div>
+              <div class="menu-item"><span class="name">Tiramisu</span><span class="price">$4.75</span></div>
+              <div class="menu-item"><span class="name">Panna Cotta</span><span class="price">$4.00</span></div>
+            </div>
+            <div>
+              <div class="menu-item"><span class="name">Affogato</span><span class="price">$3.50</span></div>
+              <div class="menu-item"><span class="name">Creme Brulee</span><span class="price">$4.25</span></div>
+            </div>
+            <div>
+              <div class="menu-item"><span class="name">Ice Cream Scoop</span><span class="price">$2.50</span></div>
+              <div class="menu-item"><span class="name">Seasonal Tart</span><span class="price">$4.50</span></div>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <!-- Panel 7 -->
+      <article class="panel" data-panel="6">
+        <div class="panel-header" role="button" aria-expanded="false" tabindex="0">
+          <div class="left-ico">🛍</div>
+          <h3>Merchandise</h3>
+          <div class="chev" aria-hidden="true">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <div class="coffee-deco" aria-hidden="true"></div>
+        </div>
+        <div class="panel-body">
+          <div class="menu-columns">
+            <div>
+              <div class="menu-item"><span class="name">Cafe Nova Mug</span><span class="price">$8.00</span></div>
+              <div class="menu-item"><span class="name">Tote Bag</span><span class="price">$10.00</span></div>
+            </div>
+            <div>
+              <div class="menu-item"><span class="name">Coffee Beans (250g)</span><span class="price">$9.50</span></div>
+              <div class="menu-item"><span class="name">Gift Card $25</span><span class="price">$25.00</span></div>
+            </div>
+            <div>
+              <div class="menu-item"><span class="name">Coffee Subscription</span><span class="price">$20/mo</span></div>
+            </div>
+          </div>
+        </div>
+      </article>
+
+    </section>
+
+    <footer>
+      <div class="footer-inner">
+        <div class="footer-col">
+          <h4>Cafe Nova</h4>
+          <p>123 Artisan Lane<br/>Your City, ST 00000</p>
+        </div>
+        <div class="footer-col">
+          <h4>Find us</h4>
+          <p>FB / IG / Tiktok @cafenova</p>
+        </div>
+        <div class="footer-col">
+          <h4>Contact</h4>
+          <p>Call: +1 (555) 123-4567<br/>Email: hello@cafenova.example</p>
+        </div>
+      </div>
+      <div class="copyright">© 2025 Cafe Nova. All rights reserved.</div>
+    </footer>
+
+    <div class="to-top" id="toTop" title="Back to top" aria-hidden="true">↑</div>
+  </main>
+
+  <script>
+    // Accordion behaviour: only one open at a time
+    (function(){
+      const panels = document.querySelectorAll('.panel');
+      const panelHeaderList = document.querySelectorAll('.panel-header');
+
+      function closeAll(){
+        panels.forEach(p => {
+          p.classList.remove('open');
+          p.querySelector('.panel-header').setAttribute('aria-expanded','false');
+        });
+      }
+
+      panelHeaderList.forEach(header => {
+        header.addEventListener('click', ()=> {
+          const panel = header.parentElement;
+          const isOpen = panel.classList.contains('open');
+          if(isOpen){
+            panel.classList.remove('open');
+            header.setAttribute('aria-expanded','false');
+          } else {
+            closeAll();
+            panel.classList.add('open');
+            header.setAttribute('aria-expanded','true');
+            // scroll into view for small screens
+            setTimeout(()=> {
+              panel.scrollIntoView({behavior:'smooth', block:'start'});
+            }, 120);
+          }
+        });
+
+        // keyboard accessibility (Enter / Space)
+        header.addEventListener('keydown', (e)=>{
+          if(e.key === 'Enter' || e.key === ' '){
+            e.preventDefault();
+            header.click();
+          }
+        });
+      });
+
+      // Optionally open the first panel
+      panels[0].classList.add('open');
+      panels[0].querySelector('.panel-header').setAttribute('aria-expanded','true');
+
+      // back to top button
+      const toTop = document.getElementById('toTop');
+      toTop.addEventListener('click', ()=> {
+        window.scrollTo({top:0, behavior:'smooth'});
+      });
+      // show/hide
+      window.addEventListener('scroll', ()=>{
+        if(window.scrollY > 300) toTop.style.display = 'grid';
+        else toTop.style.display = 'none';
+      });
+      toTop.style.display = 'none';
+    })();
+  </script>
+</body>
+</html>

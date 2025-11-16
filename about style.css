@@ -1,0 +1,144 @@
+body {
+  margin: 0;
+  font-family: 'Poppins', sans-serif;
+  background-color: #fffdf8;
+  color: #222;
+}
+
+/* Navbar */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #111;
+  color: white;
+  padding: 15px 60px;
+}
+
+.navbar .logo {
+  font-size: 1.5rem;
+  font-weight: bold;
+  letter-spacing: 2px;
+}
+
+.navbar ul {
+  list-style: none;
+  display: flex;
+  gap: 30px;
+  margin: 0;
+}
+
+.navbar a {
+  color: white;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.navbar a.active,
+.navbar a:hover {
+  color: #c49a6c;
+}
+
+/* About Intro */
+.about-intro {
+  text-align: center;
+  padding: 100px 20px 60px;
+  background: #fefaf3;
+}
+
+.about-intro h1 {
+  font-size: 2.2rem;
+  margin-bottom: 15px;
+  color: #222;
+  letter-spacing: 1px;
+}
+
+.about-intro p {
+  font-size: 1.1rem;
+  max-width: 800px;
+  margin: auto;
+  color: #555;
+  line-height: 1.6;
+}
+
+/* Coffee Story */
+.story {
+  background: #f9f5ef;
+  padding: 80px 60px;
+}
+
+.story-content {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 40px;
+  max-width: 1200px;
+  margin: auto;
+}
+
+.story-text {
+  flex: 1 1 50%;
+}
+
+.story-text h2 {
+  font-size: 1.8rem;
+  color: #222;
+  margin-bottom: 20px;
+}
+
+.story-text p {
+  color: #444;
+  line-height: 1.7;
+  margin-bottom: 15px;
+}
+
+.story-image {
+  flex: 1 1 45%;
+}
+
+.story-image img {
+  width: 100%;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+/* Footer */
+.footer {
+  background: #111;
+  color: #ddd;
+  padding: 40px 60px 20px;
+  font-size: 0.95rem;
+}
+
+.footer-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 30px;
+}
+
+.footer h3 {
+  color: #fff;
+  margin-bottom: 10px;
+}
+
+.socials a {
+  color: #c49a6c;
+  text-decoration: none;
+  margin-right: 10px;
+}
+
+.socials a:hover {
+  text-decoration: underline;
+}
+
+.footer p {
+  margin: 5px 0;
+}
+
+.copyright {
+  text-align: center;
+  margin-top: 20px;
+  font-size: 0.85rem;
+  color: #888;
+}

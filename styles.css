@@ -1,0 +1,152 @@
+/* COLOR PALETTE (Extracted) */
+:root {
+    --dark-bg: #1A1A1A;      /* Java Lounge dark background */
+    --gold: #C8A26A;         /* Java Lounge highlight */
+    --logo-light: #C8B891;   /* Café Nova logo beige */
+    --logo-dark: #4D3B2A;    /* Café Nova dark brown */
+    --white: #FFFFFF;
+}
+
+/* RESET */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Poppins", Arial, sans-serif;
+}
+
+/* TOP BAR */
+.top-bar {
+    background: var(--dark-bg);
+    color: var(--white);
+    padding: 6px 40px;
+    display: flex;
+    justify-content: space-between;
+    font-size: 14px;
+}
+
+.top-bar i {
+    margin-right: 10px;
+}
+
+/* NAVIGATION */
+.navbar {
+    background: var(--dark-bg);
+    padding: 15px 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+
+.nav-links {
+    list-style: none;
+    display: flex;
+}
+
+.nav-links li {
+    margin-left: 28px;
+}
+
+.nav-links a {
+    text-decoration: none;
+    color: #DDDDDD;
+    font-size: 16px;
+    transition: 0.3s;
+}
+
+/* Active & Hover Style */
+.nav-links a:hover,
+.nav-links .active {
+    color: var(--gold);
+}
+
+/* HERO SECTION */
+.hero {
+    height: 92vh;
+    background: url("bg.jpg") center/cover no-repeat;
+    position: relative;
+}
+
+.overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    background: rgba(26, 26, 26, 0.55);
+}
+
+.hero-content {
+    position: absolute;
+    top: 50%;
+    left: 8%;
+    transform: translateY(-50%);
+    color: var(--white);
+}
+
+.hero-content h2 {
+    font-size: 62px;
+    font-weight: 700;
+    letter-spacing: 1px;
+}
+
+.hero-content h3 {
+    font-size: 26px;
+    margin-top: 10px;
+    color: var(--gold);
+}
+
+/* BUTTON */
+.btn-outline {
+    margin-top: 25px;
+    display: inline-block;
+    padding: 12px 28px;
+    border: 2px solid var(--gold);
+    color: var(--white);
+    text-decoration: none;
+    font-weight: 600;
+    transition: 0.3s;
+}
+
+.btn-outline:hover {
+    background: var(--gold);
+    color: #000;
+}
+
+/* MOBILE */
+@media(max-width: 768px) {
+    .nav-links {
+        display: none;
+    }
+
+    .hero-content h2 {
+        font-size: 42px;
+    }
+}
+footer {
+  background-color: #0d0d0d;
+  color: #fff;
+  padding: 40px 0;
+  font-family: 'Poppins', sans-serif;
+}
+
+footer h3 {
+  color: #bfa36f;
+  margin-bottom: 15px;
+}
+
+footer a {
+  color: #bfa36f;
+  text-decoration: none;
+}
+
+footer a:hover {
+  text-decoration: underline;
+}
+
+footer img {
+  border-radius: 8px;
+}
+
+
