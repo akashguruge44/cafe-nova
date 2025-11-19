@@ -1,0 +1,224 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Cafe Nova — Contact</title>
+  <meta name="description" content="Contact Cafe Nova — hours, location, phone, and a contact form." />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root{--bg:#0f0f0f;--card:#1a1a1a;--muted:#c7c7c7;--accent:#d4a056;--accent-2:#e6b56c;--shadow:0 6px 24px rgba(0,0,0,0.35);--radius:14px}
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{font-family:Inter,system-ui,-apple-system,'Segoe UI',Roboto,'Helvetica Neue',Arial;line-height:1.45;margin:0;background:linear-gradient(180deg,#fff 0%,#fbfaf8 100%);color:#111}
+    .container{max-width:1100px;margin:40px auto;padding:24px}
+    .grid{display:grid;grid-template-columns:1fr 420px;gap:28px}
+    header{display:flex;align-items:center;gap:14px}
+    .logo{width:64px;height:64px;border-radius:12px;background:linear-gradient(135deg,var(--accent),var(--accent-2));display:flex;align-items:center;justify-content:center;color:white;font-weight:700;font-size:20px;box-shadow:var(--shadow)}
+    h1{margin:0;font-size:28px}
+    p.lead{color:var(--muted);margin-top:6px}
+
+    /* Card */
+    .card{background:var(--card);padding:20px;border-radius:var(--radius);box-shadow:var(--shadow)}
+
+    /* Contact form */
+    form{display:flex;flex-direction:column;gap:12px}
+    label{font-size:13px;color:#111}
+    input[type=text],input[type=email],textarea,select{width:100%;padding:12px;border-radius:10px;border:1px solid #e6e6e6;font-size:14px}
+    textarea{min-height:120px;resize:vertical}
+    .row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+    .btn{display:inline-block;padding:12px 16px;border-radius:10px;border:0;background:linear-gradient(90deg,var(--accent),var(--accent-2));color:white;font-weight:600;cursor:pointer}
+    .muted{color:var(--muted);font-size:14px}
+
+    /* Sidebar */
+    .details{display:flex;flex-direction:column;gap:12px}
+    .detail-item{display:flex;gap:12px;align-items:flex-start}
+    .icon{width:44px;height:44px;border-radius:10px;background:#f7f7f7;display:flex;align-items:center;justify-content:center;font-weight:600;color:var(--accent)}
+    .map{border-radius:10px;overflow:hidden}
+
+    /* small screens */
+    @media (max-width:900px){
+      .grid{grid-template-columns:1fr;}
+      .container{padding:16px;margin:20px}
+      .row{grid-template-columns:1fr}
+    }
+
+    /* success message */
+    .success{padding:12px;border-radius:8px;background:#ecfdf5;color:#065f46;border:1px solid #bbf7d0}
+    .error{padding:12px;border-radius:8px;background:#fff1f2;color:#7f1d1d;border:1px solid #fecaca}
+  </style>
+</head>
+<body>
+  <main class="container">
+    <header>
+      <div class="logo">CN</div>
+      <div>
+        <h1>Contact Cafe Nova</h1>
+        <p class="lead">Questions about catering, jobs, or bulk orders? Send us a message and we'll get back to you within 24–48 hours.</p>
+      </div>
+    </header>
+
+    <section class="grid" aria-labelledby="contact-heading">
+      <div>
+        <div class="card" id="contact">
+          <h2 id="contact-heading">Send us a message</h2>
+          <p class="muted">Prefer email? hello@cafenova.example • For urgent matters call <strong>+94 77 123 4567</strong></p>
+
+          <!-- Success / error area -->
+          <div id="form-status" aria-live="polite" style="margin-top:12px"></div>
+
+          <form id="contact-form" novalidate>
+            <div class="row">
+              <div>
+                <label for="name">Full name</label>
+                <input id="name" name="name" type="text" placeholder="Your full name" required />
+              </div>
+              <div>
+                <label for="phone">Phone (optional)</label>
+                <input id="phone" name="phone" type="text" placeholder="e.g. +94 77 123 4567" />
+              </div>
+            </div>
+
+            <label for="email">Email</label>
+            <input id="email" name="email" type="email" placeholder="you@domain.com" required />
+
+            <label for="subject">Subject</label>
+            <select id="subject" name="subject">
+              <option>General enquiry</option>
+              <option>Job application — Barista / Kitchen</option>
+              <option>Catering / Bulk order</option>
+              <option>Feedback</option>
+            </select>
+
+            <label for="message">Message</label>
+            <textarea id="message" name="message" placeholder="Tell us how we can help..." required></textarea>
+
+            <div style="display:flex;gap:12px;align-items:center;margin-top:6px">
+              <button type="submit" class="btn">Send message</button>
+              <div class="muted" style="font-size:13px">By sending you agree to our privacy policy.</div>
+            </div>
+          </form>
+
+          <!-- NOTE: Replace the JavaScript fetch URL below with your real backend endpoint or a service like Formspree/Netlify Forms -->
+          <script>
+            (function(){
+              const form = document.getElementById('contact-form');
+              const status = document.getElementById('form-status');
+
+              function show(type, text){
+                status.innerHTML = '';
+                const el = document.createElement('div');
+                el.className = type === 'success' ? 'success' : 'error';
+                el.textContent = text;
+                status.appendChild(el);
+              }
+
+              form.addEventListener('submit', function(e){
+                e.preventDefault();
+                status.innerHTML = '';
+
+                // Simple client-side validation
+                const name = form.name.value.trim();
+                const email = form.email.value.trim();
+                const message = form.message.value.trim();
+                if(!name || !email || !message){
+                  show('error','Please fill the required fields (name, email, message).');
+                  return;
+                }
+
+                // Prepare payload
+                const payload = {
+                  name, email, phone: form.phone.value.trim(), subject: form.subject.value, message
+                };
+
+                // Example: send to a demo endpoint. Replace URL with your backend or a form service.
+                const endpoint = 'https://example.com/api/contact'; // <--- CHANGE THIS
+
+                // Show optimistic message
+                show('success','Sending message...');
+
+                // Attempt to POST. If you don't have a backend yet, comment the fetch block and optionally use mailto fallback.
+                fetch(endpoint, {
+                  method: 'POST',
+                  headers: { 'Content-Type': 'application/json' },
+                  body: JSON.stringify(payload)
+                }).then(r=>{
+                  if(r.ok){
+                    show('success','Thanks — your message was sent. We will reply soon.');
+                    form.reset();
+                  } else {
+                    return r.text().then(t=>{ throw new Error(t || 'Server error') });
+                  }
+                }).catch(err=>{
+                  // If backend isn't set up, fallback to mailto link
+                  console.warn('Send failed:', err);
+                  show('error','Could not send message from this demo page. To test right away, replace the endpoint in the script with a real URL or use your email client.');
+                });
+
+              });
+            })();
+          </script>
+        </div>
+
+        <div style="height:18px"></div>
+
+        <div class="card">
+          <h3>Job applications</h3>
+          <p class="muted">To apply for a job, choose <em>Job application</em> as the subject and paste your CV into the message box (or attach via your backend). You can also email us at <strong>careers@cafenova.example</strong>.</p>
+        </div>
+      </div>
+
+      <aside>
+        <div class="card details">
+          <div>
+            <h3>Location & hours</h3>
+            <p class="muted">123 Coffee Lane, Colombo — Open daily</p>
+            <p><strong>Mon–Fri:</strong> 7:30 AM — 9:00 PM<br><strong>Sat–Sun:</strong> 8:00 AM — 10:00 PM</p>
+          </div>
+
+          <div class="detail-item">
+            <div class="icon">📞</div>
+            <div>
+              <div class="muted">Phone</div>
+              <div><a href="tel:+94771234567">+94 77 123 4567</a></div>
+            </div>
+          </div>
+
+          <div class="detail-item">
+            <div class="icon">✉️</div>
+            <div>
+              <div class="muted">Email</div>
+              <div><a href="mailto:hello@cafenova.example">hello@cafenova.example</a></div>
+            </div>
+          </div>
+
+          <div class="detail-item">
+            <div class="icon">📍</div>
+            <div>
+              <div class="muted">Map</div>
+              <div class="map" style="margin-top:8px">
+                <!-- OpenStreetMap embed (replace coords with your shop's coordinates) -->
+                <iframe title="Cafe Nova location" src="https://www.openstreetmap.org/export/embed.html?bbox=79.8583%2C6.9271%2C79.8623%2C6.9291&layer=mapnik" style="border:0;width:100%;height:180px" loading="lazy"></iframe>
+                <small style="display:block;margin-top:6px;color:var(--muted)">Map coordinates are example only. Replace with your correct address.</small>
+              </div>
+            </div>
+          </div>
+
+          <div style="margin-top:6px;display:flex;gap:8px">
+            <a class="muted" href="#" aria-label="Instagram">Instagram</a>
+            <a class="muted" href="#" aria-label="Facebook">Facebook</a>
+            <a class="muted" href="#" aria-label="X">X</a>
+          </div>
+        </div>
+      </aside>
+    </section>
+
+    <footer style="max-width:1100px;margin:32px auto 90px;display:flex;justify-content:space-between;align-items:center;gap:12px">
+      <div class="muted">© Cafe Nova — All rights reserved</div>
+      <div class="muted">Designed for your coffee job contact page • Customize any text or the script endpoint</div>
+    </footer>
+  </main>
+</body>
+</html>
+
